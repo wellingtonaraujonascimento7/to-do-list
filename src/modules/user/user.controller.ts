@@ -16,7 +16,7 @@ class UserController {
     async findAllUsers(_req: Request, res: Response, next: NextFunction) {
         try {
             const users = await this.userService.findAllUsers();
-            res.json(users);
+            res.status(200).json(users);
         } catch (error) {
             next(error);
         }
@@ -26,7 +26,7 @@ class UserController {
         try {
             const userId = this.getUserIdString(req.params.id);
             const user = await this.userService.findUserById(userId);
-            res.json(user);
+            res.status(200).json(user);
         } catch (error) {
             next(error);
         }
@@ -39,7 +39,7 @@ class UserController {
                 userId,
                 req.body,
             );
-            res.json(updatedUser);
+            res.status(200).json(updatedUser);
         } catch (error) {
             next(error);
         }

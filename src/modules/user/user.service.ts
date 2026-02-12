@@ -42,9 +42,9 @@ class UserService {
         id: string,
         updateUserDto: UpdateUserDTO,
     ): Promise<UserModel> {
-        const userAlreadyExists = await this.userRepository.findUserById(id);
+        const userExists = await this.userRepository.findUserById(id);
 
-        if (!userAlreadyExists) {
+        if (!userExists) {
             throw new AppError('User not found', 404);
         }
 
@@ -70,6 +70,12 @@ class UserService {
     }
 
     async deleteUser(id: string): Promise<void> {
+        const userExists = await this.userRepository.findUserById(id);
+
+        if (!userExists) {
+            throw new AppError('User not found', 404);
+        }
+
         await this.userRepository.deleteUser(id);
     }
 
