@@ -1,13 +1,11 @@
 import express from 'express';
-import prisma from './shared/database/prisma';
+import userRouter from './modules/user/user.route';
+import globalErrorHandlerMiddleware from './shared/middlewares/global-error-handler.middleware';
 
 const app = express();
 
 app.use(express.json());
-
-app.get('/', async (_, res) => {
-    const users = await prisma.user.findMany();
-    res.json(users);
-});
+app.use('/users', userRouter);
+app.use(globalErrorHandlerMiddleware);
 
 export default app;
