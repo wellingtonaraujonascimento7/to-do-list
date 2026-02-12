@@ -14,6 +14,10 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,json}\"",
     "typecheck": "tsc --noEmit",
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
+    "db:logs": "docker-compose logs -f postgres",
+    "db:reset": "prisma migrate reset",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,9 +26,9 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.6",
     "@types/node": "^25.2.3",
+    "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8.55.0",
     "@typescript-eslint/parser": "^8.55.0",
     "eslint": "^9.39.2",
@@ -37,9 +41,10 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.4.0",
+    "@prisma/adapter-pg": "^7.4.0",
     "@prisma/client": "^7.4.0",
     "dotenv": "^17.2.4",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.18.0"
   }
 }
