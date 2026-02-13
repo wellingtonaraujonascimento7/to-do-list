@@ -69,14 +69,16 @@ class UserService {
         return this.userRepository.updateUser(id, userToUpdate);
     }
 
-    async deleteUser(id: string): Promise<void> {
-        const userExists = await this.userRepository.findUserById(id);
+    async deleteUser(id: string): Promise<UserModel> {
+        const user = await this.userRepository.findUserById(id);
 
-        if (!userExists) {
+        if (!user) {
             throw new AppError('User not found', 404);
         }
 
         await this.userRepository.deleteUser(id);
+
+        return user;
     }
 
     private async hashPassword(password: string): Promise<string> {
