@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import { userController } from '../../main';
+import authencationMiddleware from '../../shared/middlewares/authentication.middleware';
 
 const userRouter = Router();
+
+// Public routes
 
 /**
  * @swagger
@@ -46,11 +49,15 @@ userRouter.get('', (req, res, next) =>
     userController.findAllUsers(req, res, next),
 );
 
+// Routes protected by authentication middleware
+
 /**
  * @swagger
  * /users/{id}:
  *   get:
  *     summary: Return a user by ID.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -60,11 +67,17 @@ userRouter.get('', (req, res, next) =>
  *         description: ID of the user to retrieve.
  *     responses:
  *       200:
- *         description: User found.
+ *         description: Dados do perfil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/user'
  *       404:
  *         description: User not found.
+ *       401:
+ *         description: Unauthorized access.
  */
-userRouter.get('/:id', (req, res, next) =>
+userRouter.get('/:id', authencationMiddleware, (req, res, next) =>
     userController.findUserById(req, res, next),
 );
 
@@ -73,6 +86,8 @@ userRouter.get('/:id', (req, res, next) =>
  * /users/{id}:
  *   put:
  *     summary: Update a user by ID.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,11 +114,15 @@ userRouter.get('/:id', (req, res, next) =>
  *
  *     responses:
  *       200:
- *         description: User updated successfully.
+ *         description: Dados do perfil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/user'
  *       404:
  *         description: User not found.
  */
-userRouter.put('/:id', (req, res, next) =>
+userRouter.put('/:id', authencationMiddleware, (req, res, next) =>
     userController.updateUser(req, res, next),
 );
 
@@ -112,6 +131,8 @@ userRouter.put('/:id', (req, res, next) =>
  * /users/{id}:
  *   delete:
  *     summary: Delete a user by ID.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -120,12 +141,16 @@ userRouter.put('/:id', (req, res, next) =>
  *           type: string
  *         description: ID of the user to delete.
  *     responses:
- *       204:
- *         description: No content returned.
+ *       200:
+ *         description: Dados do perfil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/user'
  *       404:
  *         description: User not found.
  */
-userRouter.delete('/:id', (req, res, next) =>
+userRouter.delete('/:id', authencationMiddleware, (req, res, next) =>
     userController.deleteUser(req, res, next),
 );
 
