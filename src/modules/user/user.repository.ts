@@ -1,37 +1,26 @@
 import { PrismaClient } from '../../shared/database/generated/client';
-
-export interface CreateUserDTO {
-    name: string;
-    email: string;
-    password: string;
-}
-
-export interface UpdateUserDTO {
-    name?: string;
-    email?: string;
-    password?: string;
-}
-
-export interface UserModel {
-    name: string;
-    id: string;
-    email: string;
-    password: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { userSelect } from './common/user-select';
+import {
+    CreateUserDTO,
+    ResponseUserDTO,
+    UpdateUserDTO,
+    UserModel,
+} from './common/user.types';
 
 class UserRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    async createUser(createUserDTO: CreateUserDTO): Promise<UserModel> {
+    async createUser(createUserDTO: CreateUserDTO): Promise<ResponseUserDTO> {
         return this.prisma.user.create({
             data: createUserDTO,
+            select: userSelect,
         });
     }
 
-    async findAllUsers(): Promise<UserModel[]> {
-        return this.prisma.user.findMany();
+    async findAllUsers(): Promise<ResponseUserDTO[]> {
+        return this.prisma.user.findMany({
+            select: userSelect,
+        });
     }
 
     async findUserByEmail(email: string): Promise<UserModel | null> {
@@ -40,25 +29,28 @@ class UserRepository {
         });
     }
 
-    async findUserById(id: string): Promise<UserModel | null> {
+    async findUserById(id: string): Promise<ResponseUserDTO | null> {
         return this.prisma.user.findUnique({
             where: { id },
+            select: userSelect,
         });
     }
 
     async updateUser(
         id: string,
         updateUserDTO: UpdateUserDTO,
-    ): Promise<UserModel> {
+    ): Promise<ResponseUserDTO> {
         return this.prisma.user.update({
             where: { id },
             data: updateUserDTO,
+            select: userSelect,
         });
     }
 
-    async deleteUser(id: string): Promise<UserModel> {
+    async deleteUser(id: string): Promise<ResponseUserDTO> {
         return this.prisma.user.delete({
             where: { id },
+            select: userSelect,
         });
     }
 }

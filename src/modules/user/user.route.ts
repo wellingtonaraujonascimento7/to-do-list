@@ -16,18 +16,7 @@ const userRouter = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required: [name, email, password]
- *             properties:
- *               name:
- *                 type: string
- *                 example: John Doe
- *               email:
- *                 type: string
- *                 example: john.doe@example.com
- *               password:
- *                 type: string
- *                 example: password123
+ *             $ref: '#/components/schemas/createUser'
  *     responses:
  *       201:
  *         description: User created successfully.
@@ -67,11 +56,11 @@ userRouter.get('', (req, res, next) =>
  *         description: ID of the user to retrieve.
  *     responses:
  *       200:
- *         description: Dados do perfil
+ *         description: Return the user
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/responseUser'
  *       404:
  *         description: User not found.
  *       401:
@@ -100,25 +89,14 @@ userRouter.get('/:id', authencationMiddleware, (req, res, next) =>
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: newName
- *               email:
- *                 type: string
- *                 example: newEmail@example.com
- *               password:
- *                 type: string
- *                 example: newPassword123
- *
+ *             $ref: '#/components/schemas/updateUser'
  *     responses:
  *       200:
- *         description: Dados do perfil
+ *         description: Return the user
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/responseUser'
  *       404:
  *         description: User not found.
  *       401:
@@ -144,11 +122,11 @@ userRouter.put('/:id', authencationMiddleware, (req, res, next) =>
  *         description: ID of the user to delete.
  *     responses:
  *       200:
- *         description: Dados do perfil
+ *         description: Return the user
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/responseUser'
  *       404:
  *         description: User not found.
  *       401:

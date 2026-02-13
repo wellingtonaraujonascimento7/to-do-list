@@ -1,15 +1,16 @@
 import AppError from '../../shared/errors/app.erro';
-import UserRepository, {
+import {
     CreateUserDTO,
     UpdateUserDTO,
-    UserModel,
-} from './user.repository';
+    ResponseUserDTO,
+} from './common/user.types';
+import UserRepository from './user.repository';
 import bcrypt from 'bcrypt';
 
 class UserService {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async createUser(createUserDto: CreateUserDTO): Promise<UserModel> {
+    async createUser(createUserDto: CreateUserDTO): Promise<ResponseUserDTO> {
         const userAlreadyExists = await this.userRepository.findUserByEmail(
             createUserDto.email,
         );
@@ -24,11 +25,11 @@ class UserService {
         return this.userRepository.createUser(userToCreate);
     }
 
-    async findAllUsers(): Promise<UserModel[]> {
+    async findAllUsers(): Promise<ResponseUserDTO[]> {
         return this.userRepository.findAllUsers();
     }
 
-    async findUserById(id: string): Promise<UserModel> {
+    async findUserById(id: string): Promise<ResponseUserDTO> {
         const user = await this.userRepository.findUserById(id);
 
         if (!user) {
@@ -41,7 +42,7 @@ class UserService {
     async updateUser(
         id: string,
         updateUserDto: UpdateUserDTO,
-    ): Promise<UserModel> {
+    ): Promise<ResponseUserDTO> {
         const userExists = await this.userRepository.findUserById(id);
 
         if (!userExists) {
@@ -69,7 +70,7 @@ class UserService {
         return this.userRepository.updateUser(id, userToUpdate);
     }
 
-    async deleteUser(id: string): Promise<UserModel> {
+    async deleteUser(id: string): Promise<ResponseUserDTO> {
         const user = await this.userRepository.findUserById(id);
 
         if (!user) {

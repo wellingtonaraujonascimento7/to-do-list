@@ -16,15 +16,65 @@ const options = {
                 },
             },
             schemas: {
-                user: {
+                responseUser: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string' },
-                        name: { type: 'string' },
-                        email: { type: 'string' },
-                        password: { type: 'string' },
-                        createdAt: { type: 'string', format: 'date-time' },
-                        updatedAt: { type: 'string', format: 'date-time' },
+                        id: {
+                            type: 'string',
+                            example: '123e4567-e89b-12d3-a456-426614174000',
+                        },
+                        name: { type: 'string', example: 'John Doe' },
+                        email: {
+                            type: 'string',
+                            example: 'john.doe@example.com',
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2024-01-01T00:00:00Z',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2024-01-01T00:00:00Z',
+                        },
+                    },
+                },
+
+                createUser: {
+                    type: 'object',
+                    required: ['name', 'email', 'password'],
+                    properties: {
+                        name: {
+                            type: 'string',
+                            example: 'John Doe',
+                        },
+                        email: {
+                            type: 'string',
+                            example: 'john.doe@example.com',
+                        },
+                        password: {
+                            type: 'string',
+                            example: 'password123',
+                        },
+                    },
+                },
+
+                updateUser: {
+                    type: 'object',
+                    properties: {
+                        name: {
+                            type: 'string',
+                            example: 'newName',
+                        },
+                        email: {
+                            type: 'string',
+                            example: 'newEmail@example.com',
+                        },
+                        password: {
+                            type: 'string',
+                            example: 'newPassword123',
+                        },
                     },
                 },
             },
