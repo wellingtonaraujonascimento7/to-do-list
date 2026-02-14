@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { userController } from '../../main';
 import authencationMiddleware from '../../shared/middlewares/authentication.middleware';
+import validateBodyMiddleware from '../../shared/middlewares/validate-body.middleware';
+import { createUserSchema, updateUserSchema } from './user.schema';
 
 const userRouter = Router();
 
@@ -23,8 +25,10 @@ const userRouter = Router();
  *       400:
  *         description: User already exists or invalid data.
  */
-userRouter.post('', (req, res, next) =>
-    userController.createUser(req, res, next),
+userRouter.post(
+    '',
+    validateBodyMiddleware(createUserSchema),
+    (req, res, next) => userController.createUser(req, res, next),
 );
 
 /**
@@ -89,9 +93,14 @@ userRouter.get('/me', authencationMiddleware, (req, res, next) =>
  *         description: User not found.
  *       401:
  *         description: Unauthorized access.
+ *       400:
+ *         description: User already exists or invalid data.
  */
-userRouter.put('/me', authencationMiddleware, (req, res, next) =>
-    userController.updateUser(req, res, next),
+userRouter.put(
+    '/me',
+    authencationMiddleware,
+    validateBodyMiddleware(updateUserSchema),
+    (req, res, next) => userController.updateUser(req, res, next),
 );
 
 /**

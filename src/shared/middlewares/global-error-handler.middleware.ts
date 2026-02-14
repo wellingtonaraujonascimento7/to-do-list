@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../errors/app.erro';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { ZodError } from 'zod';
 
 const globalErrorHandlerMiddleware = (
     err: unknown,
@@ -31,6 +32,14 @@ const globalErrorHandlerMiddleware = (
         });
     }
 
+    if (err instanceof ZodError) {
+        return res.status(400).json({
+            error: 'Validation error. Invalid input data.',
+            details: err.issues,
+            statusCode: 400,
+        });
+    }
+
     if (err instanceof AppError) {
         return res
             .status(err.statusCode)
@@ -39,7 +48,7 @@ const globalErrorHandlerMiddleware = (
 
     return res
         .status(500)
-        .json({ error: 'Internal Server Error', statusCode: 500 });
+        .json({ error: 'Internal Server Error.', statusCode: 500 });
 };
 
 export default globalErrorHandlerMiddleware;
