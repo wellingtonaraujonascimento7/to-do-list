@@ -77,6 +77,73 @@ const options = {
                         },
                     },
                 },
+
+                createTask: {
+                    type: 'object',
+                    required: ['title'],
+                    properties: {
+                        title: {
+                            type: 'string',
+                            example: 'Buy groceries',
+                        },
+                        description: {
+                            type: 'string',
+                            example: 'Milk, Bread, Eggs, and Butter',
+                        },
+                    },
+                },
+
+                updateTask: {
+                    type: 'object',
+                    properties: {
+                        title: {
+                            type: 'string',
+                            example: 'Buy groceries',
+                        },
+                        description: {
+                            type: 'string',
+                            example: 'Milk, Bread, Eggs, and Butter',
+                        },
+                        status: {
+                            type: 'string',
+                            enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
+                            example: 'IN_PROGRESS',
+                        },
+                    },
+                },
+
+                responseTask: {
+                    type: 'object',
+                    properties: {
+                        id: {
+                            type: 'string',
+                            example: '123e4567-e89b-12d3-a456-426614174000',
+                        },
+                        title: {
+                            type: 'string',
+                            example: 'Buy groceries',
+                        },
+                        description: {
+                            type: 'string',
+                            example: 'Milk, Bread, Eggs, and Butter',
+                        },
+                        status: {
+                            type: 'string',
+                            enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
+                            example: 'IN_PROGRESS',
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2024-01-01T00:00:00Z',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            example: '2024-01-01T00:00:00Z',
+                        },
+                    },
+                },
             },
         },
     },

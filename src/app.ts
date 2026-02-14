@@ -4,12 +4,14 @@ import globalErrorHandlerMiddleware from './shared/middlewares/global-error-hand
 import swaggerSpec from './swagger';
 import swaggerUi from 'swagger-ui-express';
 import authRouter from './modules/auth/auth.route';
+import taskRouter from './modules/task/task.route';
 
 const app = express();
 
 app.use(express.json());
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/tasks', taskRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(globalErrorHandlerMiddleware);
 
