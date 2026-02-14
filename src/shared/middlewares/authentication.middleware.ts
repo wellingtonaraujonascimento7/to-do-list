@@ -25,11 +25,12 @@ const authencationMiddleware = (
         throw new AppError('Unauthorized access', 401);
     }
 
+    if (!process.env.JWT_SECRET) {
+        throw new AppError('JWT secret not configured', 500);
+    }
+
     try {
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET!,
-        ) as JwtPayload;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
         req.user = decoded;
         next();
     } catch {

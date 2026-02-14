@@ -2,7 +2,7 @@ import z from 'zod';
 
 const taskSchema = z.object({
     id: z.string(),
-    title: z.string(),
+    title: z.string().min(1),
     description: z.string().optional().nullable(),
     status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED']),
     createdAt: z.date(),

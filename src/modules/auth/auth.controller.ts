@@ -10,8 +10,8 @@ class AuthController {
         next: NextFunction,
     ): Promise<void> {
         try {
-            const { email, password } = req.body;
-            const token = await this.authService.login(email, password);
+            const data = req.body;
+            const token = await this.authService.login(data);
             res.status(200).json(token);
         } catch (error) {
             next(error);

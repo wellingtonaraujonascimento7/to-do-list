@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { authController } from '../../main';
+import validateBodyMiddleware from '../../shared/middlewares/validate-body.middleware';
+import { loginSchema } from './auth.schema';
 
 const authRouter = Router();
 
@@ -28,8 +30,10 @@ const authRouter = Router();
  *       401:
  *         description: Invalid credentials.
  */
-authRouter.post('/login', (req, res, next) =>
-    authController.login(req, res, next),
+authRouter.post(
+    '/login',
+    validateBodyMiddleware(loginSchema),
+    (req, res, next) => authController.login(req, res, next),
 );
 
 export default authRouter;

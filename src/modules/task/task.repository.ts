@@ -43,8 +43,10 @@ class TaskRepository {
     ): Promise<ResponseTaskDto> {
         return this.prisma.task.update({
             where: {
-                id: taskId,
-                userId,
+                id_userId: {
+                    id: taskId,
+                    userId,
+                },
             },
             data: updateTaskDto,
         });
@@ -53,8 +55,10 @@ class TaskRepository {
     async deleteTask(userId: string, taskId: string): Promise<ResponseTaskDto> {
         return this.prisma.task.delete({
             where: {
-                id: taskId,
-                userId,
+                id_userId: {
+                    id: taskId,
+                    userId,
+                },
             },
         });
     }
