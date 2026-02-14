@@ -3,8 +3,11 @@ import { taskController } from '../../main';
 import authencationMiddleware from '../../shared/middlewares/authentication.middleware';
 import validateBodyMiddleware from '../../shared/middlewares/validate-body.middleware';
 import { createTaskSchema, updateTaskSchema } from './task.schema';
+import guaranteeParamId from '../../shared/middlewares/guarantee-param-id.middleware';
 
 const taskRouter = Router();
+
+taskRouter.use(authencationMiddleware);
 
 /**
  * @swagger
@@ -31,7 +34,6 @@ const taskRouter = Router();
  */
 taskRouter.post(
     '/',
-    authencationMiddleware,
     validateBodyMiddleware(createTaskSchema),
     (req, res, next) => taskController.createTask(req, res, next),
 );
@@ -55,7 +57,7 @@ taskRouter.post(
  *       401:
  *         description: Unauthorized access.
  */
-taskRouter.get('/', authencationMiddleware, (req, res, next) =>
+taskRouter.get('/', (req, res, next) =>
     taskController.findAllTasks(req, res, next),
 );
 
@@ -86,7 +88,7 @@ taskRouter.get('/', authencationMiddleware, (req, res, next) =>
  *       404:
  *         description: Task not found.
  */
-taskRouter.get('/:id', authencationMiddleware, (req, res, next) =>
+taskRouter.get('/:id', guaranteeParamId, (req, res, next) =>
     taskController.findTaskById(req, res, next),
 );
 
@@ -125,7 +127,7 @@ taskRouter.get('/:id', authencationMiddleware, (req, res, next) =>
  */
 taskRouter.put(
     '/:id',
-    authencationMiddleware,
+    guaranteeParamId,
     validateBodyMiddleware(updateTaskSchema),
     (req, res, next) => taskController.updateTask(req, res, next),
 );
@@ -157,7 +159,7 @@ taskRouter.put(
  *       404:
  *         description: Task not found.
  */
-taskRouter.delete('/:id', authencationMiddleware, (req, res, next) =>
+taskRouter.delete('/:id', guaranteeParamId, (req, res, next) =>
     taskController.deleteTask(req, res, next),
 );
 
