@@ -20,6 +20,8 @@ const userRouter = Router();
  *     responses:
  *       201:
  *         description: User created successfully.
+ *       400:
+ *         description: User already exists or invalid data.
  */
 userRouter.post('', (req, res, next) =>
     userController.createUser(req, res, next),
@@ -42,18 +44,11 @@ userRouter.get('', (req, res, next) =>
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/me:
  *   get:
  *     summary: Return a user by ID.
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the user to retrieve.
  *     responses:
  *       200:
  *         description: Return the user
@@ -66,24 +61,17 @@ userRouter.get('', (req, res, next) =>
  *       401:
  *         description: Unauthorized access.
  */
-userRouter.get('/:id', authencationMiddleware, (req, res, next) =>
+userRouter.get('/me', authencationMiddleware, (req, res, next) =>
     userController.findUserById(req, res, next),
 );
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/me:
  *   put:
  *     summary: Update a user by ID.
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the user to update.
  *     requestBody:
  *       required: true
  *       content:
@@ -102,24 +90,17 @@ userRouter.get('/:id', authencationMiddleware, (req, res, next) =>
  *       401:
  *         description: Unauthorized access.
  */
-userRouter.put('/:id', authencationMiddleware, (req, res, next) =>
+userRouter.put('/me', authencationMiddleware, (req, res, next) =>
     userController.updateUser(req, res, next),
 );
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/me:
  *   delete:
  *     summary: Delete a user by ID.
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the user to delete.
  *     responses:
  *       200:
  *         description: Return the user
@@ -132,7 +113,7 @@ userRouter.put('/:id', authencationMiddleware, (req, res, next) =>
  *       401:
  *         description: Unauthorized access.
  */
-userRouter.delete('/:id', authencationMiddleware, (req, res, next) =>
+userRouter.delete('/me', authencationMiddleware, (req, res, next) =>
     userController.deleteUser(req, res, next),
 );
 
