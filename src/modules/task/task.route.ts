@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { taskController } from '../../main';
+import { taskController } from '..';
 import authencationMiddleware from '../../shared/middlewares/authentication.middleware';
 import validateBodyMiddleware from '../../shared/middlewares/validate-body.middleware';
 import { createTaskSchema, updateTaskSchema } from './task.schema';

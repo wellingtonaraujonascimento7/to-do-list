@@ -2,27 +2,32 @@ import AppError from '../../shared/errors/app.erro';
 import UserRepository from '../user/user.repository';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { LoginDto } from './auth.schema';
 
 class AuthService {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async login(
-        email: string,
-        password: string,
-    ): Promise<{ token_acess: string }> {
-        const user = await this.userRepository.findUserByEmail(email);
+    async login(loginDto: LoginDto): Promise<{ token_acess: string }> {
+        const user = await this.userRepository.findUserByEmail(loginDto.email);
 
         if (!user) {
             throw new AppError('Invalid credentials', 401);
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(
+            loginDto.password,
+            user.password,
+        );
 
         if (!isPasswordValid) {
             throw new AppError('Invalid credentials', 401);
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
+        if (!process.env.JWT_SECRET) {
+            throw new AppError('JWT secret not configured', 500);
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
 
